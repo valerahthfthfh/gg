@@ -4,13 +4,13 @@ function App() {
   const [purchasedTariff, setPurchasedTariff] = useState(null);
   const [tg, setTg] = useState(null);
 
-  // Адаптация под Telegram
+
   useEffect(() => {
-    // Для Telegram Mini App
+
     if (window.Telegram && window.Telegram.WebApp) {
       const webapp = window.Telegram.WebApp;
       webapp.ready();
-      webapp.expand(); // Растягиваем на всю высоту
+      webapp.expand(); 
       webapp.setHeaderColor('#ff6b00');
       webapp.setBackgroundColor('#f5f5f5');
       setTg(webapp);
@@ -53,25 +53,20 @@ function App() {
   const handlePurchase = (tariffId, tariffTitle) => {
     setPurchasedTariff(tariffId);
     
-    // Показываем уведомление (рабочий способ для всех версий)
     if (tg) {
-      // Используем MainButton как уведомление (работает во всех версиях)
-      tg.MainButton.setText(`✓ ${tariffTitle} куплен!`);
+      tg.MainButton.setText(`${tariffTitle} куплен!`);
       tg.MainButton.show();
       tg.MainButton.disable();
       
-      // Прячем через 2 секунды
       setTimeout(() => {
         tg.MainButton.hide();
         tg.MainButton.enable();
       }, 2000);
       
-      // Вибрация (работает если поддерживается)
       if (tg.HapticFeedback) {
         tg.HapticFeedback.notificationOccurred('success');
       }
     } else {
-      // Если не в Telegram, показываем обычный alert
       alert(`Тариф "${tariffTitle}" куплен!`);
     }
   };
@@ -86,7 +81,6 @@ function App() {
       minHeight: '100vh',
       boxSizing: 'border-box'
     }}>
-      {/* Шапка */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -116,7 +110,6 @@ function App() {
         )}
       </div>
 
-      {/* Карточки */}
       <div style={{
         display: 'flex',
         flexDirection: 'column',
@@ -134,7 +127,6 @@ function App() {
               boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}
           >
-            {/* Бейдж */}
             {tariff.badge && (
               <div style={{
                 position: 'absolute',
@@ -152,7 +144,6 @@ function App() {
               </div>
             )}
 
-            {/* Заголовок и цена */}
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -186,7 +177,6 @@ function App() {
               </div>
             </div>
 
-            {/* Список особенностей */}
             <ul style={{
               listStyle: 'none',
               padding: 0,
@@ -215,7 +205,6 @@ function App() {
               ))}
             </ul>
 
-            {/* Кнопка */}
             <button
               onClick={() => handlePurchase(tariff.id, tariff.title)}
               disabled={purchasedTariff === tariff.id}
@@ -238,7 +227,6 @@ function App() {
               {purchasedTariff === tariff.id ? '✓ КУПЛЕНО' : 'КУПИТЬ'}
             </button>
 
-            {/* Подсказка */}
             {purchasedTariff !== tariff.id && (
               <p style={{
                 fontSize: '11px',
